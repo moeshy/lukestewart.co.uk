@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 
 import styled from 'styled-components';
@@ -18,11 +17,13 @@ export default {
 
 export function LoadingBlockBar() {
   const [percent, setPercent] = useState(0);
+  const [showProgress, setShowProgress] = useState(true);
 
   useEffect(() => {
     const timer = setInterval(() => {
       setPercent(previousPercent => {
         if (previousPercent === 100) {
+          setShowProgress(false);
           return 0;
         }
         const diff = Math.random() * 10;
@@ -33,6 +34,10 @@ export function LoadingBlockBar() {
       clearInterval(timer);
     };
   }, []);
+
+  if (!showProgress) {
+    return null;
+  }
 
   return <Progress value={Math.floor(percent)} />;
 }
@@ -43,11 +48,13 @@ LoadingBlockBar.story = {
 
 export function Tile() {
   const [percent, setPercent] = useState(0);
+  const [showProgress, setShowProgress] = useState(true);
 
   useEffect(() => {
     const timer = setInterval(() => {
       setPercent(previousPercent => {
         if (previousPercent === 100) {
+          setShowProgress(false);
           return 0;
         }
         const diff = Math.random() * 10;
@@ -58,6 +65,10 @@ export function Tile() {
       clearInterval(timer);
     };
   }, []);
+
+  if (!showProgress) {
+    return null;
+  }
 
   return <Progress variant='tile' value={Math.floor(percent)} />;
 }
@@ -68,11 +79,13 @@ Tile.story = {
 
 export function HideValue() {
   const [percent, setPercent] = useState(0);
+  const [showProgress, setShowProgress] = useState(true);
 
   useEffect(() => {
     const timer = setInterval(() => {
       setPercent(previousPercent => {
         if (previousPercent === 100) {
+          setShowProgress(false);
           return 0;
         }
         const diff = Math.random() * 10;
@@ -83,6 +96,10 @@ export function HideValue() {
       clearInterval(timer);
     };
   }, []);
+
+  if (!showProgress) {
+    return null;
+  }
 
   return <Progress hideValue value={Math.floor(percent)} />;
 }

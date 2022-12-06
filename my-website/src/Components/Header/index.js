@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import {
   Window,
@@ -6,87 +6,133 @@ import {
   WindowHeader,
   Button,
   Toolbar,
-  Panel
+  Panel,
+  Progress
 } from 'react95';
 
-
 const Wrapper = styled.div`
- padding: 5rem;
+  padding: 5rem;
   background: ${({ theme }) => theme.desktopBackground};
-21  .window-header {
-22    display: flex;
-23    align-items: center;
-24    justify-content: space-between;
-25  }
-26  .close-icon {
-27    display: inline-block;
-28    width: 16px;
-29    height: 16px;
-30    margin-left: -1px;
-31    margin-top: -1px;
-32    transform: rotateZ(45deg);
-33    position: relative;
-34    &:before,
-35    &:after {
-36      content: '';
-37      position: absolute;
-38      background: ${({ theme }) => theme.materialText};
-39    }
-40    &:before {
-41      height: 100%;
-42      width: 3px;
-43      left: 50%;
-44      transform: translateX(-50%);
-45    }
-46    &:after {
-47      height: 3px;
-48      width: 100%;
-49      left: 0px;
-50      top: 50%;
-51      transform: translateY(-50%);
-52    }
-53  }
-54  .window {
-55    width: 400px;
-56    min-height: 200px;
-57  }
-58  .window:nth-child(2) {
-59    margin: 2rem;
-60  }
-61  .footer {
-62    display: block;
-63    margin: 0.25rem;
-64    height: 31px;
-65    line-height: 31px;
-66    padding-left: 0.25rem;
-67  }
-68`;
+  .window-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .close-icon {
+    display: inline-block;
+    width: 16px;
+    height: 16px;
+    margin-left: -1px;
+    margin-top: -1px;
+    transform: rotateZ(45deg);
+    position: relative;
+    &:before,
+    &:after {
+      content: '';
+      position: absolute;
+      background: ${({ theme }) => theme.materialText};
+    }
+    &:before {
+      height: 100%;
+      width: 3px;
+      left: 50%;
+      transform: translateX(-50%);
+    }
+    &:after {
+      height: 3px;
+      width: 100%;
+      left: 0px;
+      top: 50%;
+      transform: translateY(-50%);
+    }
+  }
+  .window {
+    width: 400px;
+    min-height: 200px;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+  }
+  .window:nth-child(2) {
+    margin: 2rem;
+  }
+  .footer {
+    display: block;
+    margin: 0.25rem;
+    height: 31px;
+    line-height: 31px;
+    padding-left: 0.25rem;
+  }
+`;
+
+
 
 export function Default() {
-  return (
-    <>
-      <Window resizable className='window'>
-       <WindowHeader className='window-header'>
-        <span>lukesPortfolio.exe</span>
+  const [showWindow, setShowWindow] = useState(true);
+  const [showProgress, setShowProgress] = useState(false);
+  const [progress, setProgress] = useState(0);
 
-       </WindowHeader>
-       <Toolbar>
-          <Button variant='menu' size='sm'>
-            Help
+  useEffect(() => {
+    setTimeout(() => {
+      setShowWindow(false);
+      setShowProgress(true);
+    }, 5000);
+
+    const interval = setInterval(() => {
+      setProgress(progress => Math.min(progress + 10, 100));
+    }, 1000);
+
+    return () => clearInterval(interval);
+  }, []);
+
+  useEffect(() => {
+    if (progress === 100) {
+      setTimeout(() => {
+        setShowProgress(false);
+      }, 1000);
+    }
+  }, [progress]);
+
+  if (!showWindow && !showProgress) {
+    return null;
+  }
+
+  if (showWindow) {
+    return (
+      <>
+        <Window resizable className='window'>
+          <WindowHeader className='window-header'>
+            <span>lukesPortfolio.exe</span>
+          </WindowHeader>
+          <Toolbar>
+            <Button variant='menu' size='sm'>
+              Help
             </Button>
           </Toolbar>
           <WindowContent>
             <p>
-              Error! Invalid user detected, admin privileges required, redirecting to %guest% profile, please wait
+              Error
+              ! Invalid user detected, admin privileges required, redirecting to %guest% profile, please wait
             </p>
           </WindowContent>
           <Panel variant='well' className='footer'>
             Redirecting user.
           </Panel>
         </Window>
-  
       </>
- );
+    );
+  }
+
+  if (showProgress) {
+    return (
+      <>
+        <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100%' }}>
+          <Progress value={progress} style={{ position: 'absolute', left: '50%', top: '50%', transform: 'translate(-50%, -50%)', width: '500px', margin: '0 auto' }} />
+        </div>
+      </>
+    );
+  }
 }
 
 Default.story = {

@@ -1,15 +1,14 @@
-import React from 'react';
-import { createGlobalStyle, ThemeProvider } from 'styled-components';
-
-import { styleReset, List, ListItem, Divider } from 'react95';
+import React from "react";
+import { createGlobalStyle, ThemeProvider } from "styled-components";
+import { styleReset, List, ListItem, Divider } from "react95";
 // pick a theme of your choice
-import desktopBackground from 'react95/dist/themes/original';
+import desktopBackground from "react95/dist/themes/original";
 // original Windows95 font (optionally)
-import ms_sans_serif from 'react95/dist/fonts/ms_sans_serif.woff2';
-import ms_sans_serif_bold from 'react95/dist/fonts/ms_sans_serif_bold.woff2';
-import { Default } from './Components/Header';
-import { StartBar } from './Components/StartBar';
-import { LoadingBlockBar } from './Components/LoadingIndicator';
+import ms_sans_serif from "react95/dist/fonts/ms_sans_serif.woff2";
+import ms_sans_serif_bold from "react95/dist/fonts/ms_sans_serif_bold.woff2";
+import { Default } from "./Components/Header";
+import { StartBar } from "./Components/StartBar";
+
 
 const GlobalStyles = createGlobalStyle`
   ${styleReset}
@@ -35,19 +34,15 @@ const App = () => (
   <body>
     <GlobalStyles />
     <ThemeProvider theme={desktopBackground}>
-    <div id = "poggers">
-    <Default/>
-    </div>
-    <div id = "loadingBarId">
-    <LoadingBlockBar/>
-    </div>
-    <div id="startBarId">
-    <StartBar/>
-    </div>
- 
+    <div id="poggers" style={{ position: 'absolute', left: '50%', top: '45%', transform: 'translate(-50%, -50%)' }}>
+        <Default />
+        
+      </div>
+      <div id="startBarId">
+        <StartBar />
+      </div>
     </ThemeProvider>
   </body>
-  
 );
 
 export default App;
